@@ -2,7 +2,7 @@ package entity;
 
 public class User {
 
-    private int id;
+    private int id; // убрать айди повезде
     private String name;
     private String surname;
     private String login;
@@ -23,13 +23,18 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
-        return id;
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;

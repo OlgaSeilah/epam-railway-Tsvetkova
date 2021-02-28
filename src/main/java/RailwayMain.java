@@ -22,11 +22,12 @@ public class RailwayMain {
                     case "1":
                         // тут вызвать кассира
                         System.out.println("Kassier");
-                        ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers();
                         break;
                     case "2":
                         //тут вызвать пассажира
                         System.out.println("Passenger");
+                        MenuPassenger menuPassenger = new MenuPassenger();
+                        menuPassenger.menu();
                         break;
                 }
                 break;

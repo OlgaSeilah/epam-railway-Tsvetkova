@@ -1,12 +1,21 @@
-import dao.StationsDAO;
+import dao.UserDAO;
+import entity.User;
+import service.IncorrectPasswordException;
 import service.ServiceAboutStations;
+import service.ServiceAboutUsers;
+import service.UserDoesNotExistException;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuPassenger {
-    public static void menuPassenger() {
-        String name;
+
+    public void menu() {
+        UserDAO userDAO = new UserDAO();
+        ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
+        ServiceAboutStations serviceAboutStations = new ServiceAboutStations();
+
+        User current = null;
+        String name; // TODO объявить эти переменные заново в каждом кейсе
         String surname;
         String login;
         String password;
@@ -27,42 +36,57 @@ public class MenuPassenger {
             String choose = scanner.nextLine();
             switch (choose) {
                 case "1":
-                    ServiceAboutStations serviceAboutStations = new ServiceAboutStations();
-                    serviceAboutStations.getListOfStations();
+                    System.out.println("Список станций в бд:");
+                    serviceAboutStations.getListOfStationNames().forEach(System.out::println);;
                     break;
-//                case "2":
-//                    System.out.println("Введите имя");
-//                    name = scanner.nextLine();
-//                    System.out.println("Введите фамилию");
-//                    surname = scanner.nextLine();
-//                    System.out.println("Введите логин");
-//                    login = scanner.nextLine();
-//                    System.out.println("Введите пароль");
-//                    password = scanner.nextLine();
-//                    Passenger newPassenger = passengerService.registration(name, surname, login, password);
-//                    if (newPassenger != null) {
-//                        System.out.println("Пассажир " + name + " " + surname + " успешно зарегистрирован, нажмите \"3\" для входа в систему");
-//                    }else {
-//                        System.exit(0);
-//                    }
-//                    break;
-//                case "3":
-//                    System.out.print("Авторизация  ");
-//                    System.out.println("введите логин"); // aa
-//                    login = scanner.nextLine();
-//                    System.out.println("введите пароль"); // bb
-//                    password = scanner.nextLine();
-//                    Passenger current = passengerService.authorisation(passId, login, password);
-//                    if (current != null) {
-//                        name = current.getName();
-//                        surname = current.getSurname();
-//                        System.out.println("Добро пожаловать, " + name + " " + surname + ", вы успешно авторизованы.\n" +
-//                                "Нажмите \"4\" для оформления заявки");
-//                        currentPassenger = current;
-//                    } else {
-//                        System.out.println("Авторизация не удалась, пожалуйста, попробуйте снова"); // добавить проверку, что именно не работает в авторизации
-//                    }
-//                    break;
+                case "2":
+                    System.out.println("Введите имя");
+                    name = scanner.nextLine();
+                    System.out.println("Введите фамилию");
+                    surname = scanner.nextLine();
+                    System.out.println("Введите логин");
+                    login = scanner.nextLine();
+                    System.out.println("Введите пароль");
+                    password = scanner.nextLine();
+                    User newUser = new User(name, surname, login, password);
+                    newUser.setName(name);
+                    newUser.setSurname(surname);
+                    newUser.setLogin(login);
+                    newUser.setPassword(password);
+                    if (serviceAboutUsers.registration(newUser)) {
+                        System.out.println("Пассажир " + name + " " + surname + " успешно зарегистрирован, нажмите \"3\" для входа в систему");
+                    } else {
+                        System.out.println("all is bad");
+                    }
+                    break;
+                case "3":
+                    System.out.print("Авторизация  ");
+                    System.out.println("введите логин"); // aa
+                    login = scanner.nextLine();
+                    System.out.println("введите пароль"); // bb
+                    password = scanner.nextLine();
+
+                    try {
+                        current = serviceAboutUsers.authorisation(login, password);
+                        System.out.println("Добро пожаловать, " + current.getName() + " " + current.getSurname() + ", вы успешно авторизованы.\n" +
+                                "Нажмите \"4\" для оформления заявки");
+                    } catch (UserDoesNotExistException e) {
+                        System.out.println("нет юзера");
+                    } catch (IncorrectPasswordException ex) {
+                        System.out.println("пароль не тот");
+                    }
+                    break;
+
+                case "4":
+                    if (current == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 3");
+                    else {
+                        System.out.println("Введите станцию отправления");
+                        String startStation = scanner.nextLine();
+                        System.out.println("Введите станцию назначения");
+                        String destinationStation = scanner.nextLine();
+                        String userLogin = current.getLogin();
+                        Re
+                    }
 //                case "4":
 //                    if (currentPassenger == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 3");
 //                    else {

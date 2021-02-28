@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import static java.lang.Class.forName;
 
-public class ConnectionToDB {
+class ConnectionToDB {
     String driver = "org.postgresql.Driver";
     String url = "jdbc:postgresql://localhost:5432/railway_test";
     Properties properties = getPropertiesForDAO();
