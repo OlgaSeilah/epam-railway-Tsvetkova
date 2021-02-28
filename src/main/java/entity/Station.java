@@ -9,6 +9,14 @@ public class Station {
         this.stationName = stationName;
     }
 
+    public Station() {
+
+    }
+
+    public Station(String stationName) {
+
+    }
+
     public int getId() {
         return id;
     }

@@ -8,41 +8,40 @@ import java.util.List;
 
 public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface{
 
-    public void listOfStations() throws SQLException {
-
-//        try  {
-//            conn = DriverManager.getConnection(url, properties);
-//            Statement statement = conn.createStatement();
-//            ResultSet result = statement.executeQuery("select * from stations");
-//            while (result.next()) {
-//                String dataBasePrintByColumnName = result.getString("station_name");
-//                System.out.println(dataBasePrintByColumnName);
-//            }
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-
-    }
-
-
     @Override
-    public Object create(Object obj) throws SQLException {
+    public Station create(Station obj) throws SQLException {
         return null;
     }
 
     @Override
-    public Object read(Object someId) throws SQLException {
-        return null;
+    public Station read(String stationName) throws SQLException {
+        Station station = new Station();
+        String sqlRequest = "select * from stations where station_name = ?";
+        conn = DriverManager.getConnection(url, properties);
+        PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
+        preparedStatement.setString(1, stationName);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        String name = null;
+
+        while (resultSet.next()) {
+            name = resultSet.getString("station_name");
+        }
+        station.setStationName(name);
+        return station;
+
     }
 
-//    @Override
-//    public Object read(Object obj) throws SQLException {
-//        return null;
-//    }
+    @Override
+    public void update(Station obj) throws SQLException {
 
-//    @Override
-    public List<String> readAllStationNames() throws SQLException { //создать интерфейс с этим методом
+    }
+
+    @Override
+    public void delete(Station obj) throws SQLException {
+
+    }
+
+    public List<String> readAllStationNames() throws SQLException { //TODO создать интерфейс с этим методом
         try  {
             conn = DriverManager.getConnection(url, properties);
             Statement statement = conn.createStatement();
@@ -61,13 +60,5 @@ public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface
         return null;
     }
 
-    @Override
-    public void update(Object obj) throws SQLException {
 
-    }
-
-    @Override
-    public void delete(Object obj) throws SQLException {
-
-    }
 }

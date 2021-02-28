@@ -1,5 +1,7 @@
 package dao;
 
-public interface StationsDaoInterface  extends CRUDInterface {
+import entity.Station;
+
+public interface StationsDaoInterface  extends CRUDInterface<Station, String> {
 
 }

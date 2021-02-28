@@ -1,10 +1,11 @@
+import dao.RequestDAO;
+import dao.StationsDAO;
 import dao.UserDAO;
+import entity.Request;
 import entity.User;
-import service.IncorrectPasswordException;
-import service.ServiceAboutStations;
-import service.ServiceAboutUsers;
-import service.UserDoesNotExistException;
+import service.*;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuPassenger {
@@ -12,10 +13,13 @@ public class MenuPassenger {
     public void menu() {
         UserDAO userDAO = new UserDAO();
         ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
+        StationsDAO stationsDAO = new StationsDAO();
         ServiceAboutStations serviceAboutStations = new ServiceAboutStations();
+        RequestDAO requestDAO = new RequestDAO();
+        ServiceAboutRequest serviceAboutRequest = new ServiceAboutRequest(requestDAO, stationsDAO);
 
         User current = null;
-        String name; // TODO объявить эти переменные заново в каждом кейсе
+        String name; // TODO объявить эти переменные заново в каждом кейсе они принадлежат конкретным кейсам
         String surname;
         String login;
         String password;
@@ -85,7 +89,23 @@ public class MenuPassenger {
                         System.out.println("Введите станцию назначения");
                         String destinationStation = scanner.nextLine();
                         String userLogin = current.getLogin();
-                        Re
+                        Request request = new Request(userLogin, startStation, destinationStation);
+
+                        try {
+                            if (serviceAboutRequest.createRequest(request)) {
+                            System.out.println("Пассажир " + current.getName() + " " + current.getSurname() +
+                                    " успешно оформил заявку на билет от станции " + request.getStartStation() +
+                                    " до станции " + request.getDestinationStation());
+                        }
+                        }catch (SuchStationDoesNotExistException e ) {
+                            System.out.println("нет одной ли двух станций");
+                        }
+                        catch (SQLException e) {
+                            System.out.println("что-т еще не так");
+                        }
+
+
+                        break;
                     }
 //                case "4":
 //                    if (currentPassenger == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 3");
@@ -94,7 +114,6 @@ public class MenuPassenger {
 //                        String startStation = scanner.nextLine(); //
 //                        System.out.println("Введите станцию назначения");
 //                        String destinationStation = scanner.nextLine();
-//
 //                        passId = currentPassenger.getId();
 //                        Request currentReq = requestService.createRequest(passId, startStation, destinationStation);
 //                        currentRequest = currentReq;
