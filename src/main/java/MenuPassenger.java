@@ -1,6 +1,9 @@
 import dao.RequestDAO;
 import dao.StationsDAO;
 import dao.UserDAO;
+import dao.exception.IncorrectPasswordException;
+import dao.exception.SuchStationDoesNotExistException;
+import dao.exception.UserDoesNotExistException;
 import entity.Request;
 import entity.User;
 import service.*;
@@ -12,11 +15,11 @@ public class MenuPassenger {
 
     public void menuPass(Scanner scanner) {
         UserDAO userDAO = new UserDAO();
-        ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
+        UserService userService = new UserService(userDAO);
         StationsDAO stationsDAO = new StationsDAO();
-        ServiceAboutStations serviceAboutStations = new ServiceAboutStations();
+        StationsService stationsService = new StationsService();
         RequestDAO requestDAO = new RequestDAO();
-        ServiceAboutRequest serviceAboutRequest = new ServiceAboutRequest(requestDAO, stationsDAO);
+        RequestService requestService = new RequestService(requestDAO, stationsDAO);
 
         User current = null;
         String name; // TODO объявить эти переменные заново в каждом кейсе они принадлежат конкретным кейсам
@@ -40,7 +43,7 @@ public class MenuPassenger {
             switch (choose) {
                 case "1":                                                         // ПРОСМОТР СПИСКА СТАНЦИЙ
                     System.out.println("Список станций в бд:");
-                    serviceAboutStations.getListOfStationNames().forEach(System.out::println);;
+                    stationsService.getListOfStationNames().forEach(System.out::println);;
                     break;
                 case "2":                                                      // ЗАРЕГИСТРИРОВАТЬ ЮЗЕРА
                     System.out.println("Введите имя");
@@ -56,7 +59,7 @@ public class MenuPassenger {
                     newUser.setSurname(surname);
                     newUser.setLogin(login);
                     newUser.setPassword(password);
-                    if (serviceAboutUsers.registration(newUser)) {
+                    if (userService.registration(newUser)) {
                         System.out.println("Пассажир " + name + " " + surname + " успешно зарегистрирован, нажмите \"3\" для входа в систему");
                     } else {
                         System.out.println("all is bad");
@@ -69,7 +72,7 @@ public class MenuPassenger {
                     System.out.println("введите пароль"); // bb
                     password = scanner.nextLine();
                     try {
-                        current = serviceAboutUsers.authorisation(login, password);
+                        current = userService.authorisation(login, password);
                         System.out.println("Добро пожаловать, " + current.getName() + " " + current.getSurname() + ", вы успешно авторизованы.\n" +
                                 "Нажмите \"4\" для оформления заявки");
                     } catch (UserDoesNotExistException e) {
@@ -90,7 +93,7 @@ public class MenuPassenger {
                         Request request = new Request(userLogin, startStation, destinationStation);
 
                         try {
-                            if (serviceAboutRequest.createRequest(request)) {
+                            if (requestService.createRequest(request)) {
                             System.out.println("Пассажир " + current.getName() + " " + current.getSurname() +
                                     " успешно оформил заявку на билет от станции " + request.getStartStation() +
                                     " до станции " + request.getDestinationStation());

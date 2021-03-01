@@ -1,4 +1,4 @@
-package service;
+package dao.exception;
 
 public class SuchStationDoesNotExistException extends Exception {
 

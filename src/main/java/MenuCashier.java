@@ -1,7 +1,8 @@
 import dao.RequestDAO;
 import dao.StationsDAO;
 import dao.UserDAO;
-import entity.Request;
+import dao.exception.IncorrectPasswordException;
+import dao.exception.UserDoesNotExistException;
 import entity.Station;
 import entity.User;
 import service.*;
@@ -10,11 +11,11 @@ import java.util.Scanner;
 public class MenuCashier {
     public void menuCashier(Scanner scanner) {
         UserDAO userDAO = new UserDAO();
-        ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
+        UserService userService = new UserService(userDAO);
         StationsDAO stationsDAO = new StationsDAO();
-        ServiceAboutStations serviceAboutStations = new ServiceAboutStations();
+        StationsService stationsService = new StationsService();
         RequestDAO requestDAO = new RequestDAO();
-        ServiceAboutRequest serviceAboutRequest = new ServiceAboutRequest(requestDAO, stationsDAO);
+        RequestService requestService = new RequestService(requestDAO, stationsDAO);
 
         User cashier = null;
 
@@ -40,7 +41,7 @@ public class MenuCashier {
                     System.out.println("введите пароль"); // admin
                     String passwordAdmin = scanner.nextLine();
                     try {
-                        cashier = serviceAboutUsers.authorisation(loginAdmin, passwordAdmin);
+                        cashier = userService.authorisation(loginAdmin, passwordAdmin);
                         System.out.println("Добро пожаловать, " + cashier.getName() + " " + cashier.getSurname() + ", вы успешно авторизованы.\n" +
                                 "Нажмите \"4\" для оформления заявки"); //TODO тут что-то изменить?
                     } catch (UserDoesNotExistException e) {
@@ -51,11 +52,11 @@ public class MenuCashier {
                     break;
                     case "1":                                                         // ПРОСМОТР СПИСКА СТАНЦИЙ
                     System.out.println("Список станций в бд:");
-                    serviceAboutStations.getListOfStationNames().forEach(System.out::println);
+                    stationsService.getListOfStationNames().forEach(System.out::println);
                     break;
                 case "2":                                                      // Просмотреть список зарегистрированных пассажиров
                     System.out.println("Список зарегистрированных пользователей:");
-                    System.out.println(serviceAboutUsers.getListOfPassNames());
+                    System.out.println(userService.getListOfPassNames());
 //                    TODO не разобралась, как вывести красиво
                     break;
 
@@ -66,7 +67,7 @@ public class MenuCashier {
                         String stationName = scanner.nextLine();
                         Station newStation = new Station(stationName);
                         newStation.setStationName(stationName);
-                        if (serviceAboutStations.addNewStation(newStation)) {
+                        if (stationsService.addNewStation(newStation)) {
                             System.out.println("Станция " + stationName + " успешно добавлена");
                         } else {
                             System.out.println("не удалось добавить станцию");
@@ -80,7 +81,7 @@ public class MenuCashier {
                         String delStationName = scanner.nextLine();                 //TODO переспросить ли админа на этот счет?
                         Station deleteStation = new Station();
                         deleteStation.setStationName(delStationName);
-                        if (serviceAboutStations.deleteStation(deleteStation)) {
+                        if (stationsService.deleteStation(deleteStation)) {
                             System.out.println("Станция " + delStationName + " успешно удалена");
                         } else {
                             System.out.println("не удалось удалить станцию");
@@ -108,7 +109,7 @@ public class MenuCashier {
                         System.out.println("Введите логин пассажира, которого хотите удалить");
                         String delPassName = scanner.nextLine();
                         User deleteUser = new User(delPassName);
-                        if (serviceAboutUsers.deleteUser(deleteUser)) {
+                        if (userService.deleteUser(deleteUser)) {
                             System.out.println("Пассажир " + deleteUser.getLogin() + " успешно удален");
                         } else {
                             System.out.println("не удалось удалить пассажира");
@@ -116,11 +117,22 @@ public class MenuCashier {
                     }
                     break;
                 case "5": // 3 наиболее посещаемые станции
-                    serviceAboutRequest.getThreeMostPopularStations().forEach(System.out::println);
+                    requestService.getThreeMostPopularStations().forEach(System.out::println);
 
+                case "7":
+                    if (cashier == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 0");   // TODO
 
-
-
+                    else {
+                        System.out.println("Введите айди заявки, которую хотите удалить");
+                        String delPassName = scanner.nextLine();
+                        User deleteUser = new User(delPassName);
+                        if (userService.deleteUser(deleteUser)) {
+                            System.out.println("Пассажир " + deleteUser.getLogin() + " успешно удален");
+                        } else {
+                            System.out.println("не удалось удалить пассажира");
+                        }
+                    }
+                    break;
 
 
 

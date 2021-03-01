@@ -1,21 +1,20 @@
 package service;
-import dao.StationsDAO;
 import dao.UserDAO;
+import dao.exception.IncorrectPasswordException;
+import dao.exception.UserDoesNotExistException;
 import entity.User;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
-public class ServiceAboutUsers {
+public class UserService {
     UserDAO userDAO;
 
-    public ServiceAboutUsers(UserDAO userDAO) {
+    public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public ServiceAboutUsers() {
+    public UserService() {
 
     }
 

@@ -1,16 +1,17 @@
 package service;
 import dao.RequestDAO;
 import dao.StationsDAO;
+import dao.exception.SuchStationDoesNotExistException;
 import entity.Request;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class ServiceAboutRequest {
+public class RequestService {
     final RequestDAO requestDAO;
     final StationsDAO stationsDAO;
 
-    public ServiceAboutRequest(RequestDAO requestDAO, StationsDAO stationsDAO) {
+    public RequestService(RequestDAO requestDAO, StationsDAO stationsDAO) {
         this.requestDAO = requestDAO;
         this.stationsDAO = stationsDAO;
     }

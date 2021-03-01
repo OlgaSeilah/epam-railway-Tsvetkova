@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-public class ServiceAboutStations {
+public class StationsService {
         StationsDAO stationsDAO = new StationsDAO();
 
     public List<String> getListOfStationNames() {
