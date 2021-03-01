@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class MenuPassenger {
 
-    public void menu() {
+    public void menuPass() {
         UserDAO userDAO = new UserDAO();
         ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
         StationsDAO stationsDAO = new StationsDAO();
@@ -39,11 +39,11 @@ public class MenuPassenger {
         while (true) {
             String choose = scanner.nextLine();
             switch (choose) {
-                case "1":
+                case "1":                                                         // ПРОСМОТР СПИСКА СТАНЦИЙ
                     System.out.println("Список станций в бд:");
                     serviceAboutStations.getListOfStationNames().forEach(System.out::println);;
                     break;
-                case "2":
+                case "2":                                                      // ЗАРЕГИСТРИРОВАТЬ ЮЗЕРА
                     System.out.println("Введите имя");
                     name = scanner.nextLine();
                     System.out.println("Введите фамилию");
@@ -63,13 +63,12 @@ public class MenuPassenger {
                         System.out.println("all is bad");
                     }
                     break;
-                case "3":
+                case "3":                                                         // АВТОРИЗОВАТЬ ЮЗЕРА
                     System.out.print("Авторизация  ");
                     System.out.println("введите логин"); // aa
                     login = scanner.nextLine();
                     System.out.println("введите пароль"); // bb
                     password = scanner.nextLine();
-
                     try {
                         current = serviceAboutUsers.authorisation(login, password);
                         System.out.println("Добро пожаловать, " + current.getName() + " " + current.getSurname() + ", вы успешно авторизованы.\n" +
@@ -81,7 +80,7 @@ public class MenuPassenger {
                     }
                     break;
 
-                case "4":
+                case "4":                                                               // СОЗДАТЬ ЗАЯВКУ
                     if (current == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 3");
                     else {
                         System.out.println("Введите станцию отправления");
@@ -107,42 +106,23 @@ public class MenuPassenger {
 
                         break;
                     }
-//                case "4":
-//                    if (currentPassenger == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 3");
-//                    else {
-//                        System.out.println("Введите станцию отправления");
-//                        String startStation = scanner.nextLine(); //
-//                        System.out.println("Введите станцию назначения");
-//                        String destinationStation = scanner.nextLine();
-//                        passId = currentPassenger.getId();
-//                        Request currentReq = requestService.createRequest(passId, startStation, destinationStation);
-//                        currentRequest = currentReq;
-//                        if (currentReq != null) {
-//                            System.out.println("Поздравляем, " + currentPassenger.getName() + " " + currentPassenger.getSurname() +
-//                                    ", вы оформили заявку на билет от станции " + currentRequest.getStartStation() + " до станции " +
-//                                    currentRequest.getDestinationStation() + "!");
-//                        } else {
-//                            System.out.println("поломалось где-то здесь");
-//                        }
-//                    }
-//                    break;
-//                case "5":
-//                    currentPassenger = null;
-//                    System.out.println("Вы успешно вышли из системы");
-//                    break;
-//                case "6":
-//                    System.out.println("До свидания!");
-//                    System.exit(0);
-//                    break;
-//
-//                default:
-//                    System.out.println("Вы запросили несуществующую функцию: " + choose);
-//                    System.out.println("Работа программы завершена");
-//                    System.exit(0);
-//
-//            }
-//    }
+                case "5":
+                    current = null;
+                    System.out.println("Вы успешно вышли из профиля");
+
+                    break;
+                case "6":
+                    System.out.println("До свидания!");
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Вы запросили несуществующую функцию: " + choose);
+                    System.out.println("Работа программы завершена");
+                    System.exit(0);
+
+            }
+
             }
         }
     }
-}

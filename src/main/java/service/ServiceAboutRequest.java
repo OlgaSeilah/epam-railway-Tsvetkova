@@ -14,9 +14,7 @@ public class ServiceAboutRequest {
         this.stationsDAO = stationsDAO;
     }
 
-
     public boolean createRequest(Request request) throws SuchStationDoesNotExistException, SQLException {
-
             if (stationsDAO.read(request.getStartStation()) != null && stationsDAO.read(request.getDestinationStation()) != null){
                     requestDAO.create(request);
                     return true;
