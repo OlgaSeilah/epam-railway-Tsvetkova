@@ -3,13 +3,15 @@ package dao;
 import entity.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-public class UserDAO extends ConnectionToDB  implements UserDaoInterface {
+public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TODO переопределить туСтринг?
 
     @Override
-    public User create(User newUser) throws SQLException {
+    public User create(User newUser)  {
         String sqlRequest = "INSERT INTO passengers (login, pass, name, surname) VALUES (?, ?, ?, ?)";
-
         try {
             conn = DriverManager.getConnection(url, properties);
             PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
@@ -21,8 +23,7 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface {
             return newUser;
 
         } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-            System.out.println("Ползователь с таким логином уже существует, пожалуйста, попробуйте заново");
+            System.out.println("Пользователь с таким логином уже существует, пожалуйста, попробуйте заново");
 
         }
         return null;
@@ -34,15 +35,23 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface {
     }
 
     @Override
-    public void delete(User obj) throws SQLException {
-
+    public void delete(User deleteUser) throws SQLException {
+        String sqlRequest = "DELETE FROM passengers WHERE login = '" + deleteUser.getLogin() + "';";
+        try {
+            conn = DriverManager.getConnection(url, properties);
+//            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
+            Statement statement = conn.createStatement();
+//            preparedStatement.setString(1, deleteUser.getLogin());
+            statement.executeUpdate(sqlRequest);
+//            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Override
     public User read(String login) throws SQLException {
-
         String sqlRequest = "SELECT * FROM passengers WHERE login = ?";
-
         try {
             conn = DriverManager.getConnection(url, properties);
             PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
@@ -53,29 +62,36 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface {
                 String surname = result.getString("surname");
                 String password = result.getString("pass");
                 return new User(name, surname, login, password);
-
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return null;
     }
-//    public Passenger getPassengerByLoginPassword(String login, String password) throws SQLException {
-//        try {
-//            Connection conn = DriverManager.getConnection(url, properties);
-//            Statement statement = conn.createStatement();
-//            ResultSet result = statement.executeQuery("select * from passengers where login = '" + login + "' and pass = '" + password +  "';");
-//            if (result.next()) {
-//                int id = result.getInt("id");
-//                String name = result.getString("name");
-//                String surname = result.getString("surname");
-//                return new Passenger(id, name, surname, login, password);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return null;
-//    }
+
+    public HashMap<String,String> readAllPassNames() throws SQLException {
+        try {
+            conn = DriverManager.getConnection(url, properties);
+            Statement statement = conn.createStatement();
+            ResultSet result = statement.executeQuery("select * from passengers");
+// TODO или переделать в лист?           List<String> logins = new ArrayList<>();
+            HashMap<String,String> loginsAndNames = new HashMap<>();
+            while (result.next()) {
+                String passLogin = result.getString("login");
+                String passName = result.getString("name");
+                loginsAndNames.put(passLogin, passName);
+            }
+
+            return loginsAndNames;
+
+        } catch (SQLException e ) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
 
         }

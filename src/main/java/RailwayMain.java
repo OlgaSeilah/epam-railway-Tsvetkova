@@ -19,13 +19,13 @@ public class RailwayMain {
                         // тут вызвать кассира                    TODO переименовать его в админа, а таблицу в юзерс?
                         System.out.println("Cashier");
                         MenuCashier menuCashier = new MenuCashier();
-                        menuCashier.menuCashier();
+                        menuCashier.menuCashier(scanner);
                         break;
                     case "2":
                         //тут вызвать пассажира
                         System.out.println("Passenger");
                         MenuPassenger menuPassenger = new MenuPassenger();
-                        menuPassenger.menuPass();
+                        menuPassenger.menuPass(scanner);
                         break;
                 }
                 break;

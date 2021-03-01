@@ -4,6 +4,7 @@ import dao.StationsDAO;
 import entity.Request;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class ServiceAboutRequest {
     final RequestDAO requestDAO;
@@ -22,6 +23,10 @@ public class ServiceAboutRequest {
                 throw new SuchStationDoesNotExistException();
             }
 
+
+    }
+
+    public List<String> getThreeMostPopularStations()    {
 
     }
 }

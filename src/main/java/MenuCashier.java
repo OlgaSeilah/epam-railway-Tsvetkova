@@ -2,14 +2,13 @@ import dao.RequestDAO;
 import dao.StationsDAO;
 import dao.UserDAO;
 import entity.Request;
+import entity.Station;
 import entity.User;
 import service.*;
-
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuCashier {
-    public void menuCashier() {
+    public void menuCashier(Scanner scanner) {
         UserDAO userDAO = new UserDAO();
         ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
         StationsDAO stationsDAO = new StationsDAO();
@@ -19,90 +18,115 @@ public class MenuCashier {
 
         User cashier = null;
 
-        Scanner scanner = new Scanner(System.in);
         System.out.println("        Меню кассира");
 
         System.out.println("Список доступных функций:\n" +
                 "1 - Просмотр списка доступных станций\n" +
-                "2 - Авторизоваться в роли кассира\n" +
-                "3 - Просмотреть список зарегистрированных пассажиров\n" +
-                "4 - Добавить станцию\n" +
-                "5 - Удалить станцию\n" +
-                "6 - Вывести три наиболее посещаемые станции\n" +
-                "7 - Удалить пассажира\n" +
-                "8 - Удалить заявку на билет\n" +
-                "9 - Завершить выполнение программы\n" +
+                "2 - Просмотреть список зарегистрированных пассажиров\n" +
+                "3 - Добавить станцию\n" +
+                "4 - Удалить станцию\n" +
+                "5 - Вывести три наиболее посещаемые станции\n" +
+                "6 - Удалить пассажира\n" +
+                "7 - Удалить заявку на билет\n" +
+                "8 - Завершить выполнение программы\n" +
                 "Введите номер искомой функции:");
         while (true) {
             String choose = scanner.nextLine();
             switch (choose) {
-                case "1":                                                         // ПРОСМОТР СПИСКА СТАНЦИЙ
-                    System.out.println("Список станций в бд:");
-                    serviceAboutStations.getListOfStationNames().forEach(System.out::println);
-                    ;
-                    break;
-                case "3":                                                      // Просмотреть список зарегистрированных пассажиров
-                    System.out.println("Введите имя");
-                    name = scanner.nextLine();
-                    System.out.println("Введите фамилию");
-                    surname = scanner.nextLine();
-                    System.out.println("Введите логин");
-                    login = scanner.nextLine();
-                    System.out.println("Введите пароль");
-                    password = scanner.nextLine();
-                    User newUser = new User(name, surname, login, password);
-                    newUser.setName(name);
-                    newUser.setSurname(surname);
-                    newUser.setLogin(login);
-                    newUser.setPassword(password);
-                    if (serviceAboutUsers.registration(newUser)) {
-                        System.out.println("Пассажир " + name + " " + surname + " успешно зарегистрирован, нажмите \"3\" для входа в систему");
-                    } else {
-                        System.out.println("all is bad");
-                    }
-                    break;
-                case "2":                                                         // АВТОРИЗОВАТЬ кассира
+                case "0":
                     System.out.print("Авторизация  ");
                     System.out.println("введите логин"); // admin
-                    String login = scanner.nextLine();
+                    String loginAdmin = scanner.nextLine();
                     System.out.println("введите пароль"); // admin
-                    String password = scanner.nextLine();
+                    String passwordAdmin = scanner.nextLine();
                     try {
-                        cashier = serviceAboutUsers.authorisation(login, password);
+                        cashier = serviceAboutUsers.authorisation(loginAdmin, passwordAdmin);
                         System.out.println("Добро пожаловать, " + cashier.getName() + " " + cashier.getSurname() + ", вы успешно авторизованы.\n" +
                                 "Нажмите \"4\" для оформления заявки"); //TODO тут что-то изменить?
                     } catch (UserDoesNotExistException e) {
-                        System.out.println("нет юзера");
+                        System.out.println("не тот логин");
                     } catch (IncorrectPasswordException ex) {
-                        System.out.println("пароль не тот");
+                        System.out.println("не тот пароль");
+                    }
+                    break;
+                    case "1":                                                         // ПРОСМОТР СПИСКА СТАНЦИЙ
+                    System.out.println("Список станций в бд:");
+                    serviceAboutStations.getListOfStationNames().forEach(System.out::println);
+                    break;
+                case "2":                                                      // Просмотреть список зарегистрированных пассажиров
+                    System.out.println("Список зарегистрированных пользователей:");
+                    System.out.println(serviceAboutUsers.getListOfPassNames());
+//                    TODO не разобралась, как вывести красиво
+                    break;
+
+                case "3":
+                    if (cashier == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 0");
+                    else {                                                                                  // Добавить станцию в бд
+                        System.out.println("Введите название станции");
+                        String stationName = scanner.nextLine();
+                        Station newStation = new Station(stationName);
+                        newStation.setStationName(stationName);
+                        if (serviceAboutStations.addNewStation(newStation)) {
+                            System.out.println("Станция " + stationName + " успешно добавлена");
+                        } else {
+                            System.out.println("не удалось добавить станцию");
+                        }
+                    }
+                    break;
+                case "4":
+                    if (cashier == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 0");
+                    else {                                                                      //удалить станцию из бд
+                        System.out.println("Введите название станции, которую хотите удалить");
+                        String delStationName = scanner.nextLine();                 //TODO переспросить ли админа на этот счет?
+                        Station deleteStation = new Station();
+                        deleteStation.setStationName(delStationName);
+                        if (serviceAboutStations.deleteStation(deleteStation)) {
+                            System.out.println("Станция " + delStationName + " успешно удалена");
+                        } else {
+                            System.out.println("не удалось удалить станцию");
+                        }
                     }
                     break;
 
-//                case "4":                                                               // СОЗДАТЬ ЗАЯВКУ
-//                    if (current == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 3");
-//                    else {
-//                        System.out.println("Введите станцию отправления");
-//                        String startStation = scanner.nextLine();
-//                        System.out.println("Введите станцию назначения");
-//                        String destinationStation = scanner.nextLine();
-//                        String userLogin = current.getLogin();
-//                        Request request = new Request(userLogin, startStation, destinationStation);
-//
-//                        try {
-//                            if (serviceAboutRequest.createRequest(request)) {
-//                                System.out.println("Пассажир " + current.getName() + " " + current.getSurname() +
-//                                        " успешно оформил заявку на билет от станции " + request.getStartStation() +
-//                                        " до станции " + request.getDestinationStation());
-//                            }
-//                        }catch (SuchStationDoesNotExistException e ) {
-//                            System.out.println("нет одной ли двух станций");
+//                case "5":
+//                    if (cashier == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 0");
+//                    else {                                                                      //удалить станцию из бд
+//                        System.out.println("Для удаления заявки");
+//                        if ()) {
+//                            System.out.println("Станция " + delStationName + " успешно удалена");
+//                        } else {
+//                            System.out.println("не удалось удалить станцию");
 //                        }
-//                        catch (SQLException e) {
-//                            System.out.println("что-т еще не так");
-//                        }
+//                    }
 //
+//                    break;
+
+                case "6":
+                    if (cashier == null) System.out.println("Авторизуйтесь, пожалуйста! Нажмите 0");   // TODO ye;yf kb 'nf ghjdthrf
+
+                    else {
+                        System.out.println("Введите логин пассажира, которого хотите удалить");
+                        String delPassName = scanner.nextLine();
+                        User deleteUser = new User(delPassName);
+                        if (serviceAboutUsers.deleteUser(deleteUser)) {
+                            System.out.println("Пассажир " + deleteUser.getLogin() + " успешно удален");
+                        } else {
+                            System.out.println("не удалось удалить пассажира");
+                        }
+                    }
+                    break;
+                case "5": // 3 наиболее посещаемые станции
+                    serviceAboutRequest.getThreeMostPopularStations().forEach(System.out::println);
+
+
+
+
+
+
+
+
+
 //
-//                        break;
 //                    }
 //                case "5":
 //                    current = null;
@@ -122,6 +146,8 @@ public class MenuCashier {
 //            }
 
 
+                default:
+                    throw new IllegalStateException("Unexpected value: " + choose);
             }
         }
     }

@@ -4,6 +4,8 @@ import dao.UserDAO;
 import entity.User;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class ServiceAboutUsers {
@@ -17,14 +19,13 @@ public class ServiceAboutUsers {
 
     }
 
-
-    public boolean registration (User newUser) {
+    public boolean registration(User newUser) {
         try {
             userDAO.create(newUser);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-//            System.out.println("Ползователь с таким логином уже существует, пожалуйста, попробуйте заново");
+//            System.out.println("Пользователь с таким логином уже существует, пожалуйста, попробуйте заново");
         }
 
         return false;
@@ -44,9 +45,24 @@ public class ServiceAboutUsers {
         } else {
             throw new IncorrectPasswordException();
         }
-
-
     }
 
+    public HashMap<String, String> getListOfPassNames() {
+        try {
+            return userDAO.readAllPassNames();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
 
+    public boolean deleteUser(User deleteUser) {
+        try {
+            userDAO.delete(deleteUser);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

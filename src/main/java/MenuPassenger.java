@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class MenuPassenger {
 
-    public void menuPass() {
+    public void menuPass(Scanner scanner) {
         UserDAO userDAO = new UserDAO();
         ServiceAboutUsers serviceAboutUsers = new ServiceAboutUsers(userDAO);
         StationsDAO stationsDAO = new StationsDAO();
@@ -25,7 +25,6 @@ public class MenuPassenger {
         String password;
         int passId = 0;
 
-        Scanner scanner = new Scanner(System.in);
         System.out.println("        Меню пассажира");
 
         System.out.println("Список доступных функций:\n" +

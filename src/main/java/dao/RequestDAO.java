@@ -5,6 +5,8 @@ import entity.Request;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 public class RequestDAO extends ConnectionToDB implements CRUDInterface<Request, String> {
 
@@ -35,5 +37,16 @@ public class RequestDAO extends ConnectionToDB implements CRUDInterface<Request,
 
     }
 
+    public List<String> readThreeMostPopularStations() throws SQLException {
+        String sqlRequest = "select dest_station_name from requests where station_name = ?";
+        try {
+            conn = DriverManager.getConnection(url,properties);
+            Statement statement = conn.createStatement();
+            statement.executeQuery(sqlRequest);
+
+        } catch (SQLException e) {
+
+        }
+    }
 
         }
