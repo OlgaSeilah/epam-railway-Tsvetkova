@@ -20,10 +20,7 @@ public class MenuCashier {
         User currentCashier = null;
 
         System.out.println("        Меню кассира \n".toUpperCase());
-
         System.out.println("Необходимо авторизоваться для продолжения работы\n");
-        String choose = scanner.nextLine();
-        System.out.print("Авторизация  ");
         System.out.println("введите логин"); // admin
         String loginAdmin = scanner.nextLine();
         System.out.println("введите пароль"); // admin
@@ -51,6 +48,7 @@ public class MenuCashier {
                     "7 - Удалить заявку на билет\n" +
                     "8 - Завершить выполнение программы\n" +
                     "Введите номер искомой функции:");
+            String choose = scanner.nextLine();
             while (true) {
                 switch (choose) {
                     case "1":

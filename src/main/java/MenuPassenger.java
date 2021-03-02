@@ -41,7 +41,7 @@ public class MenuPassenger {
                 newUser.setPassword(password);
                 if (userService.registration(newUser)) {
                     current = newUser;
-                    System.out.println("Пассажир " + name + " " + surname + " успешно зарегистрирован, нажмите \"3\" для входа в систему");
+                    System.out.println("Пассажир " + name + " " + surname + " успешно зарегистрирован");
                 } else {
                     System.out.println("all is bad");
                 }

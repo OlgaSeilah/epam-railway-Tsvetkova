@@ -12,17 +12,12 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public UserService() {
-
-    }
-
     public boolean registration(User newUser) {
         try {
             userDAO.create(newUser);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-//            System.out.println("Пользователь с таким логином уже существует, пожалуйста, попробуйте заново");
         }
 
         return false;

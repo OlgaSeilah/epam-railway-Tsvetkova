@@ -33,4 +33,16 @@ public class Request {
     public String getDestinationStation() {
         return destinationStation;
     }
+
+    public void setPassengerLogin(String passengerLogin) {
+
+    }
+
+    public void setStartStation(String startStation) {
+        this.startStation = this.startStation;
+    }
+
+    public void setDestinationStation(String destinationStation) {
+        this.destinationStation = this.destinationStation;
+    }
 }
