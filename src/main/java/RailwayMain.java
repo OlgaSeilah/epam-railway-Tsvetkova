@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+
+//TODO как бы вынести авторизацию куда-то?
 public class RailwayMain {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

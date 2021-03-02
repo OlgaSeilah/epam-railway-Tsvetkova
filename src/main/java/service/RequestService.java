@@ -23,11 +23,14 @@ public class RequestService {
             } else {
                 throw new SuchStationDoesNotExistException();
             }
-
-
     }
 
-    public List<String> getThreeMostPopularStations()    {
-
+    public List<String> getThreeMostPopularStations() {
+        try {
+            return requestDAO.readThreeMostPopularStations();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        } return null;
     }
+
 }

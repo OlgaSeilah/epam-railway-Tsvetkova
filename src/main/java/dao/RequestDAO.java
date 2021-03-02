@@ -2,13 +2,11 @@ package dao;
 
 import entity.Request;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class RequestDAO extends ConnectionToDB implements CRUDInterface<Request, String> {
+public class RequestDAO extends ConnectionToDB implements RequestDaoInterface {
 
     @Override
     public Request create(Request request) throws SQLException {
@@ -22,14 +20,30 @@ public class RequestDAO extends ConnectionToDB implements CRUDInterface<Request,
         return request;
     }
 
+
     @Override
-    public Request read(String someId) throws SQLException {
+    public List<String> readThreeMostPopularStations() throws SQLException {
+        String sqlRequest = "SELECT dest_station_name FROM requests\n" +
+                "    GROUP BY dest_station_name ORDER BY count(*) DESC LIMIT 3;";
+        List<String> listOfPopularStations = new ArrayList<>();
+        try {
+            conn = DriverManager.getConnection(url,properties);
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlRequest);
+            while (resultSet.next()) {
+                listOfPopularStations.add(resultSet.getString("dest_station_name"));
+            }
+            return listOfPopularStations;
+
+        } catch (SQLException e) {
+
+        }
         return null;
     }
 
     @Override
-    public void update(Request obj) throws SQLException {
-
+    public Request read(String someId) throws SQLException {
+        return null;
     }
 
     @Override
@@ -37,16 +51,8 @@ public class RequestDAO extends ConnectionToDB implements CRUDInterface<Request,
 
     }
 
-    public List<String> readThreeMostPopularStations() throws SQLException {
-        String sqlRequest = "select dest_station_name from requests where station_name = ?";
-        try {
-            conn = DriverManager.getConnection(url,properties);
-            Statement statement = conn.createStatement();
-            statement.executeQuery(sqlRequest);
+    @Override
+    public void update(Request obj) throws SQLException {
 
-        } catch (SQLException e) {
-
-        }
     }
-
-        }
+}

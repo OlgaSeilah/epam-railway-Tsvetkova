@@ -57,17 +57,18 @@ public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface
         preparedStatement.executeUpdate();
     }
 
+    @Override
     public List<String> readAllStationNames() throws SQLException { //TODO создать интерфейс с этим методом
         try  {
             conn = DriverManager.getConnection(url, properties);
             Statement statement = conn.createStatement();
-            ResultSet result = statement.executeQuery("select * from stations");
+            ResultSet resultSet = statement.executeQuery("select * from stations");
             List<String> names = new ArrayList<>();
-            while (result.next()) {
-                String stationName = result.getString("station_name");
+            while (resultSet.next()) {
+                String stationName = resultSet.getString("station_name");
                 names.add(stationName);
             }
-            return names; //TODO некоторый массив данных
+            return names; //TODO это некоторый массив данных
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
