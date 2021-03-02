@@ -1,11 +1,10 @@
 package dao;
 
+import dao.interfaces.UserDaoInterface;
 import entity.User;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TODO переопределить туСтринг?
 
@@ -39,11 +38,8 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TOD
         String sqlRequest = "DELETE FROM passengers WHERE login = '" + deleteUser.getLogin() + "';";
         try {
             conn = DriverManager.getConnection(url, properties);
-//            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
             Statement statement = conn.createStatement();
-//            preparedStatement.setString(1, deleteUser.getLogin());
             statement.executeUpdate(sqlRequest);
-//            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

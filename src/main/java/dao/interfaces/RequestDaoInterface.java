@@ -1,7 +1,6 @@
-package dao;
+package dao.interfaces;
 
 import entity.Request;
-import entity.Station;
 
 import java.sql.SQLException;
 import java.util.List;

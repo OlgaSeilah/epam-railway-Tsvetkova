@@ -1,12 +1,13 @@
 package dao;
 
+import dao.interfaces.StationsDaoInterface;
 import entity.Station;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface{
+public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface {
 
     @Override
     public Station create(Station newStation)  {

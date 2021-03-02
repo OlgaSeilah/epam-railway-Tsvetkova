@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 
-//TODO как бы вынести авторизацию куда-то?
+//TODO как бы вынести авторизацию куда-то?  1) пекеджи для исключений!!
 public class RailwayMain {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -24,7 +24,6 @@ public class RailwayMain {
                         menuCashier.menuCashier(scanner);
                         break;
                     case "2":
-                        //тут вызвать пассажира
                         System.out.println("Passenger");
                         MenuPassenger menuPassenger = new MenuPassenger();
                         menuPassenger.menuPass(scanner);

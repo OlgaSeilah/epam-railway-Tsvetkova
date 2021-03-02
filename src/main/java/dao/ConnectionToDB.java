@@ -2,11 +2,8 @@ package dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.module.Configuration;
 import java.sql.Connection;
 import java.util.Properties;
-
-import static java.lang.Class.forName;
 
 class ConnectionToDB {
     String driver = "org.postgresql.Driver";

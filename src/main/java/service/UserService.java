@@ -1,7 +1,5 @@
 package service;
 import dao.UserDAO;
-import dao.exception.IncorrectPasswordException;
-import dao.exception.UserDoesNotExistException;
 import entity.User;
 
 import java.sql.SQLException;

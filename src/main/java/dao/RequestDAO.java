@@ -1,5 +1,6 @@
 package dao;
 
+import dao.interfaces.RequestDaoInterface;
 import entity.Request;
 
 import java.sql.*;
@@ -47,9 +48,35 @@ public class RequestDAO extends ConnectionToDB implements RequestDaoInterface {
     }
 
     @Override
-    public void delete(Request obj) throws SQLException {
+    public void delete(Request delRequest) throws SQLException {
+        String sqlRequest = "DELETE FROM requests WHERE passenger_login = ? and start_station_name = ? and dest_station_name = ?";
+        try {
+            conn = DriverManager.getConnection(url, properties);
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
+            preparedStatement.setString(1, delRequest.getPassengerLogin());
+            preparedStatement.setString(2, delRequest.getStartStation());
+            preparedStatement.setString(3, delRequest.getDestinationStation());
+            preparedStatement.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+//    public HashMap<String, Integer> getListOfEqualsRequestsHavingByOnePass(Request request) {
+//        String sqlRequest = "SELECT * FROM requests WHERE passenger_login = ? and start_station_name = ? and dest_station_name = ?";
+//        try {
+//            conn = DriverManager.getConnection(url, properties);
+//            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
+//            preparedStatement.setString(1, delRequest.getPassengerLogin());
+//            preparedStatement.setString(2, delRequest.getStartStation());
+//            preparedStatement.setString(3, delRequest.getDestinationStation());
+//            preparedStatement.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    } // TODO запилить, если будет время
 
     @Override
     public void update(Request obj) throws SQLException {

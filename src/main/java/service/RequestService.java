@@ -1,7 +1,6 @@
 package service;
 import dao.RequestDAO;
 import dao.StationsDAO;
-import dao.exception.SuchStationDoesNotExistException;
 import entity.Request;
 
 import java.sql.SQLException;
@@ -31,6 +30,15 @@ public class RequestService {
         } catch (SQLException exception) {
             exception.printStackTrace();
         } return null;
+    }
+
+    public boolean deleteRequest(Request delRequest) {
+        try {
+            requestDAO.delete(delRequest);
+            return true;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        } return false;
     }
 
 }
