@@ -26,6 +26,7 @@ public class TestRequestService {
         request.setPassengerLogin(passengerLogin);
         request.setStartStation(startStation);
         request.setDestinationStation(destinationStation);
+        System.out.println(request.toString());
         Assert.assertTrue(requestService.createRequest(request));
     }
 

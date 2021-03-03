@@ -41,15 +41,16 @@ public class Request {
     }
 
     public void setPassengerLogin(String passengerLogin) {
+        this.passengerLogin = passengerLogin;
 
     }
 
     public void setStartStation(String startStation) {
-        this.startStation = this.startStation;
+        this.startStation = startStation;
     }
 
     public void setDestinationStation(String destinationStation) {
-        this.destinationStation = this.destinationStation;
+        this.destinationStation = destinationStation;
     }
 
     @Override

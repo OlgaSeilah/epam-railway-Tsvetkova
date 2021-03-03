@@ -97,20 +97,21 @@ public class RequestDAO extends ConnectionToDB implements RequestDaoInterface {
     public void delete(Request delRequest) throws SQLException {
         String sqlRequest = "DELETE FROM requests WHERE passenger_login = ? and start_station_name = ? and dest_station_name = ?";
         try {
+            System.out.println(delRequest.getPassengerLogin() + delRequest.getStartStation() + delRequest.getDestinationStation());
             conn = DriverManager.getConnection(url, properties);
             PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
             preparedStatement.setString(1, delRequest.getPassengerLogin());
             preparedStatement.setString(2, delRequest.getStartStation());
             preparedStatement.setString(3, delRequest.getDestinationStation());
-            preparedStatement.executeUpdate();
+            int res = preparedStatement.executeUpdate();
+            System.out.println(res);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
-
+    @Override
     public HashMap<String, List<Integer>> getListOfEqualsRequestsHavingByOnePass(Request request) {
         String sqlRequest = "SELECT * FROM requests WHERE passenger_login = ?";
         try {

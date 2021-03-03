@@ -66,6 +66,7 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TOD
         return null;
     }
 
+    @Override
     public Map<String,String> readAllPassNames() throws SQLException {
         try {
             conn = DriverManager.getConnection(url, properties);
@@ -78,13 +79,13 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TOD
                 loginsAndNames.put(passLogin, passName);
             }
 
-            return new HashMap<>(loginsAndNames);
+            return loginsAndNames;
 
         } catch (SQLException e ) {
             e.printStackTrace();
         }
         return null;
-    }// TODO или переделать в лист?           List<String> logins = new ArrayList<>();
+    }
 
 
 

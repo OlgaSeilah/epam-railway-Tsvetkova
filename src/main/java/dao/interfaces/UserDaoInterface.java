@@ -2,8 +2,10 @@ package dao.interfaces;
 
 import entity.User;
 
-public interface UserDaoInterface extends CRUDInterface<User, String> {
-//    User getUserByLoginPassword(String login, String password) throws SQLException;
+import java.sql.SQLException;
+import java.util.Map;
 
+public interface UserDaoInterface extends CRUDInterface<User, String> {
+     Map<String,String> readAllPassNames() throws SQLException;
 
 }

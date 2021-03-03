@@ -15,9 +15,9 @@ public class RequestService {
         this.requestDAO = requestDAO;
         this.stationsDAO = stationsDAO;
     }
+    Request request=null;
 
     public boolean createRequest(Request createRequest) throws SuchStationDoesNotExistException, SQLException {
-        Request request=null;
 
         try {
             request = requestDAO.create(createRequest);

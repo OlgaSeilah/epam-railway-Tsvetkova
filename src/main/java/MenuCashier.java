@@ -6,10 +6,7 @@ import entity.Station;
 import entity.User;
 import service.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuCashier {
     public void menuCashier(Scanner scanner) {
@@ -51,23 +48,26 @@ public class MenuCashier {
                     "7 - Удалить заявку на билет\n" +
                     "8 - Завершить выполнение программы\n" +
                     "Введите номер искомой функции:");
-            String choose = scanner.nextLine();
             while (true) {
+                String choose = scanner.nextLine();
+
                 switch (choose) {
+
                     case "0":
-                        System.out.println("Список  заявок у  пассажира:");
                         System.out.println("Введите логин пассажира");
                         String passLogin = scanner.nextLine();
+                        System.out.println("Список  заявок у  пассажира:");
                         Request request = new Request(passLogin);
-                        HashMap<String, List<Integer>> requstsOnpassenger = requestService.getListOfRequestsInOneUser(request);
+                        HashMap<String, List<Integer>> listOfRequestsInOneUser = requestService.getListOfRequestsInOneUser(request);
 
-                        for (HashMap.Entry<String, List<Integer>> pair : requstsOnpassenger.entrySet())
+                        for (HashMap.Entry<String, List<Integer>> pair : listOfRequestsInOneUser.entrySet())
                         {
                             String login = pair.getKey();
                             List<Integer> idOfRequest = pair.getValue();
-                            System.out.println("Логин пассажира: " + login + " , " + "\nСписок заявок: " + idOfRequest);
+                            System.out.println("Логин пассажира: " + login + "\nСписок id заявок: " + idOfRequest);
+                            break;
                         }
-                        break;
+                        break; //TODO не выходит в меню
                     case "1":
                         System.out.println("Список станций на линии:");
                         stationsService.getListOfStationNames().forEach(System.out::println);
@@ -83,6 +83,7 @@ public class MenuCashier {
                             String name = pair.getValue();
                             System.out.println("Логин пассажира: " + login + " и " + "имя пассажира: " + name);
                         }
+
 
 //                    TODO КАК перестать повторять?
                         break;
