@@ -1,21 +1,18 @@
 package service;
 
-import dao.RequestDAO;
-import dao.StationsDAO;
-import entity.Request;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;
 
-public class TestRequestService {
-    RequestDAO requestDAO = new RequestDAO();
-    StationsDAO stationsDAO = new StationsDAO();
-    RequestService requestService = new RequestService(requestDAO, stationsDAO);
-    String passengerLogin;
-    String startStation;
-    String destinationStation;
-    Request request = new Request(passengerLogin, startStation, destinationStation);
+public class TestRequestService extends TestService {
+//    RequestDAO requestDAO = new RequestDAO();
+//    StationsDAO stationsDAO = new StationsDAO();
+//    RequestService requestService = new RequestService(requestDAO, stationsDAO);
+//    String passengerLogin;
+//    String startStation;
+//    String destinationStation;
+//    Request request = new Request(passengerLogin, startStation, destinationStation);
 
 
     @Test
@@ -26,7 +23,6 @@ public class TestRequestService {
         request.setPassengerLogin(passengerLogin);
         request.setStartStation(startStation);
         request.setDestinationStation(destinationStation);
-        System.out.println(request.toString());
         Assert.assertTrue(requestService.createRequest(request));
     }
 

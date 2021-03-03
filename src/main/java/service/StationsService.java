@@ -4,10 +4,15 @@ import entity.Station;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
 
 public class StationsService {
         StationsDAO stationsDAO = new StationsDAO();
+
+    public StationsService(StationsDAO stationsDAO) {
+        this.stationsDAO = stationsDAO;
+    }
+    public StationsService() {
+    }
 
     public List<String> getListOfStationNames() {
             try {
