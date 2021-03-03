@@ -59,7 +59,7 @@ public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface
     }
 
     @Override
-    public List<String> readAllStationNames() throws SQLException { //TODO создать интерфейс с этим методом
+    public List<String> readAllStationNames() throws SQLException {
         try  {
             conn = DriverManager.getConnection(url, properties);
             Statement statement = conn.createStatement();

@@ -6,6 +6,9 @@ import entity.Station;
 import entity.User;
 import service.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MenuCashier {
@@ -38,7 +41,7 @@ public class MenuCashier {
 
         if (currentCashier != null) {
             System.out.println("Список доступных функций:\n" +
-                    "1\n" +
+                    "0 - Просмотр списка заявок у пассажира\n" +
                     "1 - Просмотр списка доступных станций\n" +
                     "2 - Просмотреть список зарегистрированных пассажиров\n" +
                     "3 - Добавить станцию\n" +
@@ -51,14 +54,37 @@ public class MenuCashier {
             String choose = scanner.nextLine();
             while (true) {
                 switch (choose) {
+                    case "0":
+                        System.out.println("Список  заявок у  пассажира:");
+                        System.out.println("Введите логин пассажира");
+                        String passLogin = scanner.nextLine();
+                        Request request = new Request(passLogin);
+                        HashMap<String, List<Integer>> requstsOnpassenger = requestService.getListOfRequestsInOneUser(request);
+
+                        for (HashMap.Entry<String, List<Integer>> pair : requstsOnpassenger.entrySet())
+                        {
+                            String login = pair.getKey();
+                            List<Integer> idOfRequest = pair.getValue();
+                            System.out.println("Логин пассажира: " + login + " , " + "\nСписок заявок: " + idOfRequest);
+                        }
+                        break;
                     case "1":
                         System.out.println("Список станций на линии:");
                         stationsService.getListOfStationNames().forEach(System.out::println);
                         break;
+
                     case "2":
                         System.out.println("Список зарегистрированных пользователей:");
-                        System.out.println(userService.getListOfPassNames());
-//                    TODO не разобралась, как вывести красиво
+                        Map<String,String> loginsAndNames = userService.getListOfPassNames();
+
+                        for (Map.Entry<String, String> pair : loginsAndNames.entrySet())
+                        {
+                            String login = pair.getKey();
+                            String name = pair.getValue();
+                            System.out.println("Логин пассажира: " + login + " и " + "имя пассажира: " + name);
+                        }
+
+//                    TODO КАК перестать повторять?
                         break;
                     case "3":
                         System.out.println("Введите название станции");
@@ -100,12 +126,12 @@ public class MenuCashier {
                     case "7":
                         System.out.println("Введите данные заявки, которую хотите удалить");
                         System.out.println("Введите логин пассажира");
-                        String passLogin = scanner.nextLine();
+                        String passLoginForRequestDel = scanner.nextLine();
                         System.out.println("Введите станцию отправления");
                         String delStartStationName = scanner.nextLine();
                         System.out.println("Введите станцию назначения");
                         String delDestStationName = scanner.nextLine();
-                        Request delRequest = new Request(passLogin, delStartStationName, delDestStationName);
+                        Request delRequest = new Request(passLoginForRequestDel, delStartStationName, delDestStationName);
                         if (requestService.deleteRequest(delRequest)) {
 
 

@@ -23,7 +23,6 @@ public class TestRequestService {
         passengerLogin = "admin";
         startStation = "Девяткино";
         destinationStation = "Мурино";
-
         request.setPassengerLogin(passengerLogin);
         request.setStartStation(startStation);
         request.setDestinationStation(destinationStation);
@@ -37,5 +36,7 @@ public class TestRequestService {
         destinationStation = "Мурино";
         Assert.assertTrue( requestService.deleteRequest(request));
     }
+
+
 
 }

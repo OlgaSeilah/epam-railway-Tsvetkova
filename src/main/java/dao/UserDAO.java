@@ -5,6 +5,7 @@ import entity.User;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TODO переопределить туСтринг?
 
@@ -65,29 +66,29 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TOD
         return null;
     }
 
-    public HashMap<String,String> readAllPassNames() throws SQLException {
+    public Map<String,String> readAllPassNames() throws SQLException {
         try {
             conn = DriverManager.getConnection(url, properties);
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("select * from passengers");
-// TODO или переделать в лист?           List<String> logins = new ArrayList<>();
-            HashMap<String,String> loginsAndNames = new HashMap<>();
+            Map<String,String> loginsAndNames = new HashMap<>();
             while (result.next()) {
                 String passLogin = result.getString("login");
                 String passName = result.getString("name");
                 loginsAndNames.put(passLogin, passName);
             }
 
-            return loginsAndNames;
+            return new HashMap<>(loginsAndNames);
 
         } catch (SQLException e ) {
             e.printStackTrace();
         }
         return null;
-    }
+    }// TODO или переделать в лист?           List<String> logins = new ArrayList<>();
 
 
 
 
 
-        }
+
+}

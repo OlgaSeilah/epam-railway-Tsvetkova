@@ -1,9 +1,10 @@
 package service;
+
 import dao.UserDAO;
 import entity.User;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Map;
 
 public class UserService {
     UserDAO userDAO;
@@ -39,7 +40,16 @@ public class UserService {
         }
     }
 
-    public HashMap<String, String> getListOfPassNames() {
+    public Map<String, String> getListOfPassNames() {
+        try {
+            return userDAO.readAllPassNames();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public Map<String, String> getListOfRequestsOnOnePass() {
         try {
             return userDAO.readAllPassNames();
         } catch (SQLException exception) {

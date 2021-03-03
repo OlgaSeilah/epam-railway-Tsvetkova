@@ -10,6 +10,7 @@ public class RailwayMain {
                 "1 - Выбрать роль\n" +
                 "2 - Выйти из системы\n" +
                 "Введите номер искомой функции:");
+
 //        while (true) {
         String choose = scanner.nextLine();
         switch (choose) {

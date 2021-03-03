@@ -64,4 +64,10 @@ public class User {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "User name: " + this.getName() + "\nUser surname: " + this.getSurname() +
+                "\n User login: " + this.getSurname() + " \nUser password: " + this.getPassword();
+    }
+
 }

@@ -13,6 +13,12 @@ public class Request {
         this.destinationStation = destinationStation;
     }
 
+    public Request(String passengerLogin) {
+        this.passengerLogin = passengerLogin;
+
+    }
+
+
     public int getPassengerId() {
         return passengerId;
     }
@@ -45,4 +51,11 @@ public class Request {
     public void setDestinationStation(String destinationStation) {
         this.destinationStation = this.destinationStation;
     }
+
+    @Override
+    public String toString() {
+        return "User login: " + this.getPassengerLogin() + "\nStart station: " + this.getStartStation() +
+                "\n Destination station: " + this.getDestinationStation();
+    }
+
 }

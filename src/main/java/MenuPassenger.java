@@ -66,8 +66,9 @@ public class MenuPassenger {
             System.out.println("Список доступных функций:\n" +
                     "1 - Просмотр списка доступных станций\n" +
                     "2 - Оформить заявку на билет\n" +
-                    "3 - Выйти из системы\n" +
-                    "4 - Завершить выполнение программы\n" +
+                    "3 - Изменить заявку\n" +
+                    "4 - Выйти из системы\n" +
+                    "5 - Завершить выполнение программы\n" +
                     "Введите номер искомой функции:");
             while (true) {
                 choose = scanner.nextLine();
@@ -97,12 +98,14 @@ public class MenuPassenger {
                              System.out.println("что-т еще не так");
                         }
                         break;
-
                     case "3":
+                        System.out.println("");
+                        break;
+                    case "4":
                         current = null;
                         System.out.println("Вы успешно вышли из профиля");
                         break;
-                    case "4":
+                    case "5":
                         System.out.println("До свидания!");
                         System.exit(0);
                         break;

@@ -4,6 +4,7 @@ import dao.StationsDAO;
 import entity.Request;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public class RequestService {
@@ -15,13 +16,35 @@ public class RequestService {
         this.stationsDAO = stationsDAO;
     }
 
-    public boolean createRequest(Request request) throws SuchStationDoesNotExistException, SQLException {
-            if (stationsDAO.read(request.getStartStation()) != null && stationsDAO.read(request.getDestinationStation()) != null){
-                    requestDAO.create(request);
-                    return true;
-            } else {
-                throw new SuchStationDoesNotExistException();
-            }
+    public boolean createRequest(Request createRequest) throws SuchStationDoesNotExistException, SQLException {
+        Request request=null;
+
+        try {
+            request = requestDAO.create(createRequest);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        if (request == null) {
+            System.out.println("не получили названия станций здесь");
+            return false;
+        } else if (!request.getStartStation().equals(createRequest.getStartStation())) {
+//            throw new SuchStationDoesNotExistException();
+            System.out.println("Не найдена стартовая станция");
+            return false;
+        } else if (!request.getDestinationStation().equals(createRequest.getDestinationStation())) {
+            throw new SuchStationDoesNotExistException();
+//            System.out.println("не найдена станция назначения");
+//            return false;
+        }  else return true;
+
+
+//            if (stationsDAO.read(request.getStartStation()) != null && stationsDAO.read(request.getDestinationStation()) != null){
+//                    requestDAO.create(request);
+//                    return true;
+//            } else {
+//                throw new SuchStationDoesNotExistException();
+//            }
     }
 
     public List<String> getThreeMostPopularStations() {
@@ -39,6 +62,10 @@ public class RequestService {
         } catch (SQLException exception) {
             exception.printStackTrace();
         } return false;
+    }
+
+    public HashMap<String, List<Integer>> getListOfRequestsInOneUser(Request request) {
+        return requestDAO.getListOfEqualsRequestsHavingByOnePass(request);
     }
 
 }
