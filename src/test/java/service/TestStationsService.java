@@ -1,5 +1,6 @@
 package service;
 
+import dao.StationsDAO;
 import entity.Station;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
@@ -8,16 +9,22 @@ import org.testng.annotations.Test;
 import java.sql.SQLException;
 
 public class TestStationsService extends TestService {
+    StationsDAO stationsDAO = new StationsDAO();
+    StationsService stationsService = new StationsService(stationsDAO);
 
-    @Test
-    public void getListOfStationNames() throws SQLException {
-        Assert.assertNotNull(stationsDAO.readAllStationNames());
-    }
+    final String stationName = generateRandomString(10);
+
+    Station testStation = new Station(stationName);
 
     @BeforeSuite
     public final Station generateStation() {
         testStation.setStationName(stationName);
         return testStation;
+    }
+
+    @Test
+    public void getListOfStationNames() throws SQLException {
+        Assert.assertNotNull(stationsDAO.readAllStationNames());
     }
 
     @Test

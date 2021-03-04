@@ -1,7 +1,7 @@
 package entity;
 
 public class Request {
-    private int passengerId;
+    private int requestId;
     private String passengerLogin;
     private String startStation;
     private String destinationStation;
@@ -18,10 +18,26 @@ public class Request {
 
     }
 
-
-    public int getPassengerId() {
-        return passengerId;
+    public Request(int requestId) {
+        this.requestId = requestId;
     }
+
+    public Request(int requestId, String passengerLogin, String startStation, String destinationStation) {
+        this.requestId = requestId;
+        this.passengerLogin = passengerLogin;
+        this.startStation = startStation;
+        this.destinationStation = destinationStation;
+    }
+
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
 
     public  String getPassengerLogin(){
         return passengerLogin;
@@ -55,7 +71,8 @@ public class Request {
 
     @Override
     public String toString() {
-        return "User login: " + this.getPassengerLogin() + "\nStart station: " + this.getStartStation() +
+        return "Request id: " + this.getRequestId() +  "\nUser login: " + this.getPassengerLogin() +
+                "\nStart station: " + this.getStartStation() +
                 "\n Destination station: " + this.getDestinationStation();
     }
 

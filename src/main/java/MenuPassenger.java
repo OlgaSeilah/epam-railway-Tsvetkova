@@ -48,13 +48,14 @@ public class MenuPassenger {
                 break;
             case "2":
                 System.out.print("Авторизация  ");
-                System.out.println("Авторизация:\nВведите логин"); // aa
+                System.out.println("Авторизация:\nВведите логин");
                 login = scanner.nextLine();
-                System.out.println("Введите пароль"); // bb
+                System.out.println("Введите пароль");
                 password = scanner.nextLine();
                 try {
                     current = userService.authorisation(login, password);
-                    System.out.println("Добро пожаловать, " + current.getName() + " " + current.getSurname() + ", вы успешно авторизованы.");
+                    System.out.println("Добро пожаловать, " + current.getName() + " " + current.getSurname() +
+                            ", вы успешно авторизованы.");
                 } catch (UserDoesNotExistException e) {
                     System.out.println("пользователь с таким логином не найден в базе");
                 } catch (IncorrectPasswordException ex) {
@@ -66,9 +67,8 @@ public class MenuPassenger {
             System.out.println("Список доступных функций:\n" +
                     "1 - Просмотр списка доступных станций\n" +
                     "2 - Оформить заявку на билет\n" +
-                    "3 - Изменить заявку\n" +
-                    "4 - Выйти из системы\n" +
-                    "5 - Завершить выполнение программы\n" +
+                    "3 - Выйти из системы\n" +
+                    "4 - Завершить выполнение программы\n" +
                     "Введите номер искомой функции:");
             while (true) {
                 choose = scanner.nextLine();
@@ -93,19 +93,17 @@ public class MenuPassenger {
                                         " до станции " + request.getDestinationStation());
                            }
                         } catch (SuchStationDoesNotExistException e) {
-                             System.out.println("нет одной ли двух станций");
+                             System.out.println("Вы ошиблись при вводе названий станций," +
+                                     " пожалуйста, введите \"1\" для просмотра существующих станций");
                         } catch (SQLException e) {
-                             System.out.println("что-т еще не так");
+                             System.out.println("Не удалось оформить заявку");
                         }
                         break;
                     case "3":
-                        System.out.println("");
-                        break;
-                    case "4":
                         current = null;
                         System.out.println("Вы успешно вышли из профиля");
                         break;
-                    case "5":
+                    case "4":
                         System.out.println("До свидания!");
                         System.exit(0);
                         break;

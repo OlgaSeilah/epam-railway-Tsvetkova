@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.util.Properties;
 
 class ConnectionToDB {
-    String driver = "org.postgresql.Driver";
     String url = "jdbc:postgresql://localhost:5432/railway_test";
     Properties properties = getPropertiesForDAO();
 

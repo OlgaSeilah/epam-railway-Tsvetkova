@@ -38,43 +38,43 @@ public class MenuCashier {
 
         if (currentCashier != null) {
             System.out.println("Список доступных функций:\n" +
-                    "0 - Просмотр списка заявок у пассажира\n" +
-                    "1 - Просмотр списка доступных станций\n" +
-                    "2 - Просмотреть список зарегистрированных пассажиров\n" +
-                    "3 - Добавить станцию\n" +
-                    "4 - Удалить станцию\n" +
-                    "5 - Вывести три наиболее посещаемые станции\n" +
-                    "6 - Удалить пассажира\n" +
-                    "7 - Удалить заявку на билет\n" +
-                    "8 - Завершить выполнение программы\n" +
+                    "1 - Просмотр списка заявок у пассажира\n" +
+                    "2 - Просмотр списка доступных станций\n" +
+                    "3 - Просмотреть список зарегистрированных пассажиров\n" +
+                    "4 - Добавить станцию\n" +
+                    "5 - Удалить станцию\n" +
+                    "6 - Вывести три наиболее посещаемые станции\n" +
+                    "7 - Удалить пассажира\n" +
+                    "8 - Редактирование заявки\n" +
+                    "9 - Удалить заявку на билет\n" +
+                    "10 - Завершить выполнение программы\n" +
                     "Введите номер искомой функции:");
             while (true) {
                 String choose = scanner.nextLine();
 
                 switch (choose) {
 
-                    case "0":
+                    case "1":
                         System.out.println("Введите логин пассажира");
                         String passLogin = scanner.nextLine();
                         System.out.println("Список  заявок у  пассажира:");
                         Request request = new Request(passLogin);
-                        HashMap<String, List<Integer>> listOfRequestsInOneUser = requestService.getListOfRequestsInOneUser(request);
+                        HashMap<String, ArrayList<Integer>> listOfRequestsInOneUser = requestService.getListOfRequestsInOneUser(request);
 
-                        for (HashMap.Entry<String, List<Integer>> pair : listOfRequestsInOneUser.entrySet())
+                        for (HashMap.Entry<String, ArrayList<Integer>> pair : listOfRequestsInOneUser.entrySet())
                         {
                             String login = pair.getKey();
-                            List<Integer> idOfRequest = pair.getValue();
+                            ArrayList<Integer> idOfRequest = pair.getValue();
                             System.out.println("Логин пассажира: " + login + "\nСписок id заявок: " + idOfRequest);
                             break;
                         }
-                        break; //TODO не выходит в меню
-                    case "1":
+                        break;
+                    case "2":
                         System.out.println("Список станций на линии:");
                         stationsService.getListOfStationNames().forEach(System.out::println);
                         break;
-
-                    case "2":
-                        System.out.println("Список зарегистрированных пользователей:");
+                    case "3":
+                        System.out.println("Список зарегистрированных пассажиров:");
                         Map<String,String> loginsAndNames = userService.getListOfPassNames();
 
                         for (Map.Entry<String, String> pair : loginsAndNames.entrySet())
@@ -83,11 +83,8 @@ public class MenuCashier {
                             String name = pair.getValue();
                             System.out.println("Логин пассажира: " + login + " и " + "имя пассажира: " + name);
                         }
-
-
-//                    TODO КАК перестать повторять?
                         break;
-                    case "3":
+                    case "4":
                         System.out.println("Введите название станции");
                         String stationName = scanner.nextLine();
                         Station newStation = new Station(stationName);
@@ -98,7 +95,7 @@ public class MenuCashier {
                             System.out.println("не удалось добавить станцию");
                         }
                         break;
-                    case "4":
+                    case "5":
                         System.out.println("Введите название станции, которую хотите удалить");
                         String delStationName = scanner.nextLine();
                         Station deleteStation = new Station();
@@ -109,11 +106,11 @@ public class MenuCashier {
                             System.out.println("не удалось удалить станцию");
                         }
                         break;
-                    case "5":
+                    case "6":
                         System.out.println("Три наиболее посещаемые станции:");
                         requestService.getThreeMostPopularStations().forEach(System.out::println);
                         break;
-                    case "6":
+                    case "7":
                         System.out.println("Введите логин пассажира, которого хотите удалить");
                         String delPassName = scanner.nextLine();
                         User deleteUser = new User(delPassName);
@@ -123,8 +120,57 @@ public class MenuCashier {
                             System.out.println("не удалось удалить пассажира");
                         }
                         break;
+                    case "8":
+                        System.out.println("Введите логин пассажира, чью заявку хотите отредактировать");
+                        String passLoginForRequestEdit = scanner.nextLine();
+                        System.out.println("Список  заявок у  пассажира:");
+                        Request requestForChoose = new Request(passLoginForRequestEdit);
+                        HashMap<String, ArrayList<Integer>> listOfRequestsInOneUserForChoose
+                                = requestService.getListOfRequestsInOneUser(requestForChoose);
 
-                    case "7":
+                        for (HashMap.Entry<String, ArrayList<Integer>> pair : listOfRequestsInOneUserForChoose.entrySet())
+                        {
+                            String login = pair.getKey();
+                            ArrayList<Integer> idOfRequest = pair.getValue();
+                            System.out.println("Логин пассажира: " + login + "\nСписок id заявок: " + idOfRequest);
+                            break;
+                        }
+
+                        System.out.println("Введите id заявки для редактирования");
+                        int requestId = scanner.nextInt();
+
+                        Request requestForEdit = requestService.read(requestId);
+                        String startStationInReq = requestForEdit.getStartStation();
+                        String destStationInReq = requestForEdit.getDestinationStation();
+                        System.out.println("В заявке номер " + requestId + " стартовая станция: " +
+                                startStationInReq + "\nстанция назначения: " + destStationInReq);
+
+                        System.out.println("Введите новые параметры:\nСтартовая станция");
+                        String startStationForEdit = scanner.nextLine();
+                        System.out.println(startStationForEdit);
+
+                        System.out.println("Станция назначения");
+                        String destStationForEdit = scanner.nextLine();
+                        System.out.println(destStationForEdit);
+
+                        Request reqEdited = new Request(requestId, passLoginForRequestEdit, startStationForEdit, destStationForEdit);
+
+                        System.out.println(reqEdited.toString());
+
+                        reqEdited.setStartStation(startStationForEdit);
+                        reqEdited.setDestinationStation(destStationForEdit);
+                        reqEdited.setRequestId(requestId);
+
+                        System.out.println(reqEdited.toString());
+
+                        if (requestService.changeRequest(reqEdited)) {
+                            System.out.println("Заявка пассажира " + passLoginForRequestEdit +
+                                    " успешно изменена");
+                        } else {
+                            System.out.println("не удалось изменить заявку");
+                        }
+                        break;
+                    case "9":
                         System.out.println("Введите данные заявки, которую хотите удалить");
                         System.out.println("Введите логин пассажира");
                         String passLoginForRequestDel = scanner.nextLine();
@@ -132,18 +178,23 @@ public class MenuCashier {
                         String delStartStationName = scanner.nextLine();
                         System.out.println("Введите станцию назначения");
                         String delDestStationName = scanner.nextLine();
-                        Request delRequest = new Request(passLoginForRequestDel, delStartStationName, delDestStationName);
+                        Request delRequest = new Request(passLoginForRequestDel, delStartStationName,
+                                delDestStationName);
                         if (requestService.deleteRequest(delRequest)) {
-
-
-                            System.out.println("Заявка пассажира " + delRequest.getPassengerLogin() + " успешно удалена");
+                            System.out.println("Заявка пассажира " + delRequest.getPassengerLogin() +
+                                    " успешно удалена");
                         } else {
                             System.out.println("не удалось удалить пассажира");
                         }
                         break;
+                    case "10":
+                        System.out.println("До свидания!");
+                        System.exit(0);
+                        break;
                     default:
-                        throw new IllegalStateException("Unexpected value: " + choose);
-                }
+                        System.out.println("Вы запросили несуществующую функцию: " + choose +
+                                "\n Работа программы завершена");
+                        System.exit(0);                }
             }
         }
     }

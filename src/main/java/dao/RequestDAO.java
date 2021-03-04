@@ -23,51 +23,6 @@ public class RequestDAO extends ConnectionToDB implements RequestDaoInterface {
         return request;
     }
 
-//    @Override
-//    public Request create(Request request) throws SQLException {
-//        String sqlRequestFindStations = "SELECT station_name FROM stations WHERE station_name = ? AND station_name = ?";
-//        String sqlRequestInsert = "INSERT INTO requests (start_station_name, dest_station_name, passenger_login) VALUES (?, ?, ?)";
-//
-//        String startStation = request.getStartStation();
-//        String destStation = request.getDestinationStation();
-//
-//        try {
-//            conn = DriverManager.getConnection(url, properties);
-//            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequestFindStations);
-//            preparedStatement.setString(1,request.getStartStation());
-//            preparedStatement.setString(2,request.getDestinationStation());
-//            ResultSet result = preparedStatement.executeQuery();
-//            while (result.next()) {
-//                startStation = result.getString("station_name");
-//                destStation = result.getString("station_name");
-//            }
-//            PreparedStatement preparedStatementforUpdate = conn.prepareStatement(sqlRequestInsert);
-//            preparedStatementforUpdate.setString(1,request.getStartStation());
-//            preparedStatementforUpdate.setString(2,request.getDestinationStation());
-//            preparedStatementforUpdate.setString(3,request.getPassengerLogin());
-//            preparedStatementforUpdate.executeUpdate();
-//            Request finRequest= new Request(startStation, destStation, request.getPassengerLogin());
-//
-//            finRequest.setStartStation(startStation);
-//            finRequest.setDestinationStation(destStation);
-//
-//            return finRequest;
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//            System.out.println(startStation);
-//            System.out.println(destStation);
-//        }
-//        return null;
-////
-////        PreparedStatement preparedStatement = conn.prepareStatement(sqlRequestInsert);
-////        preparedStatement.setString(1,request.getStartStation());
-////        preparedStatement.setString(2,request.getDestinationStation());
-////        preparedStatement.setString(3,request.getPassengerLogin());
-////        preparedStatement.executeUpdate();
-////        return request;
-//    }
-
     @Override
     public List<String> readThreeMostPopularStations() throws SQLException {
         String sqlRequest = "SELECT dest_station_name FROM requests\n" +
@@ -83,44 +38,80 @@ public class RequestDAO extends ConnectionToDB implements RequestDaoInterface {
             return listOfPopularStations;
 
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public Request read(String someId) throws SQLException {
+    public Request read(Integer requestId) throws SQLException {
+        String sqlRequest = "SELECT * FROM requests WHERE request_id=?";
+        try {
+            String passengerLogin = null;
+            String startStation = null;
+            String destinationStation = null;
+            Request requestForEdit = new Request(passengerLogin, startStation, destinationStation);
+            conn = DriverManager.getConnection(url,properties);
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
+            preparedStatement.setInt(1, requestId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                passengerLogin = resultSet.getString("passenger_login");
+                startStation = resultSet.getString("start_station_name");
+                destinationStation = resultSet.getString("dest_station_name");
+                requestForEdit.setPassengerLogin(passengerLogin);
+                requestForEdit.setStartStation(startStation);
+                requestForEdit.setDestinationStation(destinationStation);
+            }
+            return requestForEdit;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
-    public void delete(Request delRequest) throws SQLException {
-        String sqlRequest = "DELETE FROM requests WHERE passenger_login = ? and start_station_name = ? and dest_station_name = ?";
+    public void update(Request requestForEdit) throws SQLException {
+        String sqlRequest = "UPDATE requests SET start_station_name=?, dest_station_name=? WHERE request_id=?";
+
         try {
-            System.out.println(delRequest.getPassengerLogin() + delRequest.getStartStation() + delRequest.getDestinationStation());
             conn = DriverManager.getConnection(url, properties);
             PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
-            preparedStatement.setString(1, delRequest.getPassengerLogin());
-            preparedStatement.setString(2, delRequest.getStartStation());
-            preparedStatement.setString(3, delRequest.getDestinationStation());
-            int res = preparedStatement.executeUpdate();
-            System.out.println(res);
-
+            preparedStatement.setString(1, requestForEdit.getStartStation());
+            preparedStatement.setString(2, requestForEdit.getDestinationStation());
+            preparedStatement.setInt(3, requestForEdit.getRequestId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public HashMap<String, List<Integer>> getListOfEqualsRequestsHavingByOnePass(Request request) {
+    public void delete(Request delRequest) throws SQLException {
+        String sqlRequest = "DELETE FROM requests WHERE passenger_login = ? and start_station_name = ? and dest_station_name = ?";
+        try {
+            conn = DriverManager.getConnection(url, properties);
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
+            preparedStatement.setString(1, delRequest.getPassengerLogin());
+            preparedStatement.setString(2, delRequest.getStartStation());
+            preparedStatement.setString(3, delRequest.getDestinationStation());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public HashMap<String, ArrayList<Integer>> getListOfEqualsRequestsHavingByOnePass(Request request) {
         String sqlRequest = "SELECT * FROM requests WHERE passenger_login = ?";
         try {
             conn = DriverManager.getConnection(url, properties);
             PreparedStatement preparedStatement = conn.prepareStatement(sqlRequest);
             preparedStatement.setString(1, request.getPassengerLogin());
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Integer> ids = new ArrayList<>();
-            HashMap<String,List<Integer>> listOfEqualsRequests = new HashMap<>();
+            ArrayList<Integer> ids = new ArrayList<>();
+            HashMap<String,ArrayList<Integer>> listOfEqualsRequests = new HashMap<>();
 
             while (resultSet.next()) {
                 String passenger_login = resultSet.getString("passenger_login");
@@ -135,8 +126,5 @@ public class RequestDAO extends ConnectionToDB implements RequestDaoInterface {
         } return null;
     }
 
-    @Override
-    public void update(Request obj) throws SQLException {
 
-    }
 }

@@ -1,9 +1,11 @@
 package service;
+
 import dao.RequestDAO;
 import dao.StationsDAO;
 import entity.Request;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,33 +28,33 @@ public class RequestService {
         }
 
         if (request == null) {
-            System.out.println("не получили названия станций здесь");
             return false;
         } else if (!request.getStartStation().equals(createRequest.getStartStation())) {
-//            throw new SuchStationDoesNotExistException();
             System.out.println("Не найдена стартовая станция");
             return false;
         } else if (!request.getDestinationStation().equals(createRequest.getDestinationStation())) {
-            throw new SuchStationDoesNotExistException();
-//            System.out.println("не найдена станция назначения");
-//            return false;
+            System.out.println("не найдена станция назначения");
         }  else return true;
-
-
-//            if (stationsDAO.read(request.getStartStation()) != null && stationsDAO.read(request.getDestinationStation()) != null){
-//                    requestDAO.create(request);
-//                    return true;
-//            } else {
-//                throw new SuchStationDoesNotExistException();
-//            }
+        return false;
     }
 
-    public List<String> getThreeMostPopularStations() {
+    public Request read(int requestId) {
         try {
-            return requestDAO.readThreeMostPopularStations();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        } return null;
+            return requestDAO.read(requestId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean changeRequest(Request requestForEdit ) {
+        try {
+            requestDAO.update(requestForEdit);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean deleteRequest(Request delRequest) {
@@ -64,7 +66,15 @@ public class RequestService {
         } return false;
     }
 
-    public HashMap<String, List<Integer>> getListOfRequestsInOneUser(Request request) {
+    public List<String> getThreeMostPopularStations() {
+        try {
+            return requestDAO.readThreeMostPopularStations();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        } return null;
+    }
+
+    public HashMap<String, ArrayList<Integer>> getListOfRequestsInOneUser(Request request) {
         return requestDAO.getListOfEqualsRequestsHavingByOnePass(request);
     }
 

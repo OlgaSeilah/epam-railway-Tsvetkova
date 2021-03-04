@@ -49,15 +49,6 @@ public class UserService {
         return null;
     }
 
-    public Map<String, String> getListOfRequestsOnOnePass() {
-        try {
-            return userDAO.readAllPassNames();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return null;
-    }
-
     public boolean deleteUser(User deleteUser) {
         try {
             userDAO.delete(deleteUser);

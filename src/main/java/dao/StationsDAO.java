@@ -69,7 +69,7 @@ public class StationsDAO extends ConnectionToDB  implements StationsDaoInterface
                 String stationName = resultSet.getString("station_name");
                 names.add(stationName);
             }
-            return names; //TODO это некоторый массив данных
+            return names;
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

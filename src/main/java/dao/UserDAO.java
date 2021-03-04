@@ -31,7 +31,6 @@ public class UserDAO extends ConnectionToDB  implements UserDaoInterface { //TOD
 
     @Override
     public void update(User obj) throws SQLException {
-
     }
 
     @Override
