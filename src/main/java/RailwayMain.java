@@ -1,3 +1,5 @@
+import dao.SetupDBScript;
+
 import java.util.Scanner;
 
 
@@ -9,6 +11,7 @@ public class RailwayMain {
         System.out.println("Список доступных функций:\n" +
                 "1 - Выбрать роль\n" +
                 "2 - Выйти из системы\n" +
+                "3 - Создать БД\n" +
                 "Введите номер искомой функции:");
 
 //        while (true) {
@@ -19,7 +22,6 @@ public class RailwayMain {
                 choose = scanner.nextLine();
                 switch (choose) {
                     case "1":
-                        // тут вызвать кассира                    TODO переименовать его в админа, а таблицу в юзерс?
                         System.out.println("Cashier");
                         MenuCashier menuCashier = new MenuCashier();
                         menuCashier.menuCashier(scanner);
@@ -33,7 +35,13 @@ public class RailwayMain {
                 break;
             case "2":
                 System.exit(0);
+            case "3":
+                System.out.println("create db");
+                SetupDBScript setup = new SetupDBScript();
+                setup.setupDBScript();
+                break;
             default:
+                System.out.println("Повторите запуск программы");
                 System.out.println("default");
 
         }

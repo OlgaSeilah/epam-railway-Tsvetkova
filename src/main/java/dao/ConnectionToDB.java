@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.util.Properties;
 
 class ConnectionToDB {
-    String url = "jdbc:postgresql://localhost:5432/railway_test";
+    String url = "jdbc:postgresql://localhost:5432/railway";
     Properties properties = getPropertiesForDAO();
 
     Connection conn;

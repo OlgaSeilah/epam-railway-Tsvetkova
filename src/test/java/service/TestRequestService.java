@@ -22,7 +22,7 @@ public class TestRequestService extends TestService {
 
 
     @Test
-    public void createRequestYTest() throws SuchStationDoesNotExistException, SQLException {
+    public void createRequestTest() throws SuchStationDoesNotExistException, SQLException {
         passengerLogin = "admin";
         startStation = "Девяткино";
         destinationStation = "Мурино";
@@ -52,11 +52,11 @@ public class TestRequestService extends TestService {
 
     @Test
     public void getListOfRequestsInOneUserTest() {
-        request.setPassengerLogin("admin");
+        String login = "test";
+        request.setPassengerLogin(login);
         HashMap<String, ArrayList<Integer>> test = requestService.getListOfRequestsInOneUser(request);
         ArrayList<Integer> req = new ArrayList<>();
-        String login = "admin";
-        req.add(47);
+        req.add(11);
         HashMap<String, List<Integer>> expected = new HashMap<>();
         expected.put(login, req);
         Assert.assertEquals(test, expected);
