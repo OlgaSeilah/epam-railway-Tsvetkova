@@ -138,6 +138,7 @@ public class MenuCashier {
 
                         System.out.println("Введите id заявки для редактирования");
                         int requestId = scanner.nextInt();
+                        scanner.nextLine();     // needed for the linefeed after .nextInt()/
 
                         Request requestForEdit = requestService.read(requestId);
                         String startStationInReq = requestForEdit.getStartStation();
@@ -146,22 +147,16 @@ public class MenuCashier {
                                 startStationInReq + "\nстанция назначения: " + destStationInReq);
 
                         System.out.println("Введите новые параметры:\nСтартовая станция");
-                        String startStationForEdit = scanner.nextLine();
-                        System.out.println(startStationForEdit);
 
+                        String startStationForEdit = scanner.nextLine();
                         System.out.println("Станция назначения");
                         String destStationForEdit = scanner.nextLine();
-                        System.out.println(destStationForEdit);
 
                         Request reqEdited = new Request(requestId, passLoginForRequestEdit, startStationForEdit, destStationForEdit);
-
-                        System.out.println(reqEdited.toString());
 
                         reqEdited.setStartStation(startStationForEdit);
                         reqEdited.setDestinationStation(destStationForEdit);
                         reqEdited.setRequestId(requestId);
-
-                        System.out.println(reqEdited.toString());
 
                         if (requestService.changeRequest(reqEdited)) {
                             System.out.println("Заявка пассажира " + passLoginForRequestEdit +

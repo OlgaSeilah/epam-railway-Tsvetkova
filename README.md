@@ -1,4 +1,11 @@
 # epam-courses-railway
+you can restore test dump from the file railway.dump:
+
+psql -U password -h host -p port -W new_db_name < railway.dump
+.
+.
+.
+
 Вариант 15 - 1.   Система Железнодорожная касса*. Пассажир делает Заявку на Билет до необходимой ему станции назначения, время и дату поездки.
 Что необходимо сделать:
 1.   Создать базу данных в любой СУБД (MySQL, MS SQL, SQLite, PostreSQL и тд) на ваш вкус;

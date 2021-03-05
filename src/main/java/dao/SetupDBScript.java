@@ -21,14 +21,14 @@ public class SetupDBScript extends ConnectionToDB {
             }
 
         /** create DB **/
-            sql = "CREATE DATABASE railway;";
+            sql = "CREATE DATABASE new_3new_railway;";
             statement = conn.createStatement();
             statement.executeUpdate(sql);
             System.out.println("DB created");
 
 
         /** create tables **/
-            String createUsersTable = "CREATE TABLE public.passengers\n" +
+            String createUsersTable = "CREATE TABLE IF NOT EXISTS public.passengers\n" +
                     "(\n" +
                     "    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),\n" +
                     "    login character varying(100) COLLATE pg_catalog.\"default\" NOT NULL,\n" +
@@ -38,14 +38,14 @@ public class SetupDBScript extends ConnectionToDB {
                     "    CONSTRAINT passengers_pkey PRIMARY KEY (id),\n" +
                     "    CONSTRAINT unique_column_login UNIQUE (login)\n" +
                     ");";
-            String createStationsTable = "CREATE TABLE public.stations\n" +
+            String createStationsTable = "CREATE TABLE IF NOT EXISTS public.stations\n" +
                     "(\n" +
                     "    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),\n" +
                     "    station_name character varying(200) COLLATE pg_catalog.\"default\" NOT NULL,\n" +
                     "    CONSTRAINT stations_pkey PRIMARY KEY (id),\n" +
                     "    CONSTRAINT stations_station_name_key UNIQUE (station_name)\n" +
                     ")";
-            String createRequestsTable = "CREATE TABLE public.requests\n" +
+            String createRequestsTable = "CREATE TABLE IF NOT EXISTS public.requests\n" +
                     "(\n" +
                     "    request_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),\n" +
                     "    start_station_name character varying(200) COLLATE pg_catalog.\"default\" NOT NULL,\n" +
